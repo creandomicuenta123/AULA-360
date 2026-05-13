@@ -31,11 +31,27 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
+.env.local
+.env.development
+.env.production
 .env*.local
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 
 # generated native folders
 /ios
 /android
+
+# claves privadas de Firebase Admin SDK
+*firebase-adminsdk*
+*aula360-37499-firebase-adminsdk*
+
+# archivos temporales
+*.log
+*.tmp
+*.bak
+
+# sistema
+Thumbs.db
