@@ -385,9 +385,9 @@ export default function App() {
         return;
       }
       if (Constants.appOwnership === 'expo') {
-  console.log('Expo Go no soporta notificaciones push remotas. Usar APK para probar push.');
-  return;
-}
+        console.log('Expo Go no soporta notificaciones push remotas. Usar APK para probar push.');
+        return;
+      }
 
       if (!Device.isDevice) {
         Alert.alert(
@@ -1720,12 +1720,16 @@ export default function App() {
       return;
     }
 
-    await crearNotificacionParaPadres(
-      estudianteProfesorSeleccionado.id,
-      'Estado de actividad actualizado',
-      'actividad',
-      `La actividad "${actividad.titulo}" fue marcada como ${nuevoEstado}.`
-    );
+    const estudianteId = actividad.estudiante_id || estudianteProfesorSeleccionado?.id;
+
+    if (estudianteId) {
+      await crearNotificacionParaPadres(
+        estudianteId,
+        'Estado de actividad actualizado',
+        'actividad',
+        `La actividad "${actividad.titulo}" fue marcada como ${nuevoEstado}.`
+      );
+    }
 
     Alert.alert('Estado actualizado', `La actividad fue marcada como ${nuevoEstado}.`);
 
@@ -2138,9 +2142,8 @@ export default function App() {
 
     if (receptorId) {
       const titulo = 'Nuevo mensaje';
-      const mensaje = `Tienes un nuevo mensaje en el chat de ${
-        conversacionSeleccionada.estudiante_nombre || 'un estudiante'
-      }.`;
+      const mensaje = `Tienes un nuevo mensaje en el chat de ${conversacionSeleccionada.estudiante_nombre || 'un estudiante'
+        }.`;
 
       await supabase.from('notificaciones').insert({
         usuario_id: receptorId,
@@ -2313,8 +2316,8 @@ export default function App() {
   if (pantalla === 'bienvenida') {
     return (
       <Pantalla centrado>
-      <LogoAula360 />
-        <Text style={styles.logoTexto}>Aula360</Text>
+        <LogoAula360 />
+
         <Text style={styles.descripcion}>
           Seguimiento académico y comunicación inmediata entre profesor y padre de familia.
         </Text>
@@ -2332,7 +2335,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'registro') {
+  if (pantalla === 'registro') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -2479,7 +2482,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'login') {
+  if (pantalla === 'login') {
     return (
       <Pantalla centrado>
         <LogoAula360 />
@@ -2538,7 +2541,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'recuperarPassword') {
+  if (pantalla === 'recuperarPassword') {
     return (
       <Pantalla centrado>
         <LogoAula360 />
@@ -2591,7 +2594,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'perfilUsuario') {
+  if (pantalla === 'perfilUsuario') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -2690,7 +2693,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'configuracion') {
+  if (pantalla === 'configuracion') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -2774,74 +2777,74 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'ayuda') {
+  if (pantalla === 'ayuda') {
     const esProfesor = perfil?.rol === 'profesor';
 
     const pasosAyuda = esProfesor
       ? [
-          {
-            icono: '🏫',
-            titulo: 'Crea tus grados',
-            texto: 'Desde el panel del profesor puedes crear los grados de 1 a 11.',
-          },
-          {
-            icono: '📚',
-            titulo: 'Registra materias y estudiantes',
-            texto: 'Después de crear un grado, puedes agregar materias y registrar estudiantes.',
-          },
-          {
-            icono: '📝',
-            titulo: 'Registra notas',
-            texto: 'Selecciona un estudiante y registra sus notas por materia y periodo.',
-          },
-          {
-            icono: '✅',
-            titulo: 'Controla la asistencia',
-            texto: 'Marca si el estudiante está presente, ausente, tarde o justificado.',
-          },
-          {
-            icono: '💬',
-            titulo: 'Usa el chat institucional',
-            texto: 'Comunícate con los padres de familia sin depender de WhatsApp.',
-          },
-          {
-            icono: '🔔',
-            titulo: 'Activa las notificaciones',
-            texto: 'Las alertas permiten avisar inmediatamente a los padres sobre novedades académicas.',
-          },
-        ]
+        {
+          icono: '🏫',
+          titulo: 'Crea tus grados',
+          texto: 'Desde el panel del profesor puedes crear los grados de 1 a 11.',
+        },
+        {
+          icono: '📚',
+          titulo: 'Registra materias y estudiantes',
+          texto: 'Después de crear un grado, puedes agregar materias y registrar estudiantes.',
+        },
+        {
+          icono: '📝',
+          titulo: 'Registra notas',
+          texto: 'Selecciona un estudiante y registra sus notas por materia y periodo.',
+        },
+        {
+          icono: '✅',
+          titulo: 'Controla la asistencia',
+          texto: 'Marca si el estudiante está presente, ausente, tarde o justificado.',
+        },
+        {
+          icono: '💬',
+          titulo: 'Usa el chat institucional',
+          texto: 'Comunícate con los padres de familia sin depender de WhatsApp.',
+        },
+        {
+          icono: '🔔',
+          titulo: 'Activa las notificaciones',
+          texto: 'Las alertas permiten avisar inmediatamente a los padres sobre novedades académicas.',
+        },
+      ]
       : [
-          {
-            icono: '👨‍👩‍👧',
-            titulo: 'Vincula un estudiante',
-            texto: 'Desde el panel del padre, escribe la identificación del estudiante para vincularlo.',
-          },
-          {
-            icono: '📊',
-            titulo: 'Consulta el seguimiento',
-            texto: 'Puedes revisar notas, asistencia, actividades y reportes académicos.',
-          },
-          {
-            icono: '🔔',
-            titulo: 'Revisa notificaciones',
-            texto: 'Las alertas te informan sobre notas, asistencia, actividades y mensajes.',
-          },
-          {
-            icono: '💬',
-            titulo: 'Habla con el profesor',
-            texto: 'Usa el chat institucional para comunicarte directamente con el docente.',
-          },
-          {
-            icono: '📅',
-            titulo: 'Consulta el calendario',
-            texto: 'Revisa fechas importantes, actividades y entregas académicas.',
-          },
-          {
-            icono: '✅',
-            titulo: 'Mantente informado',
-            texto: 'Aula360 ayuda a estar pendiente del proceso académico del estudiante.',
-          },
-        ];
+        {
+          icono: '👨‍👩‍👧',
+          titulo: 'Vincula un estudiante',
+          texto: 'Desde el panel del padre, escribe la identificación del estudiante para vincularlo.',
+        },
+        {
+          icono: '📊',
+          titulo: 'Consulta el seguimiento',
+          texto: 'Puedes revisar notas, asistencia, actividades y reportes académicos.',
+        },
+        {
+          icono: '🔔',
+          titulo: 'Revisa notificaciones',
+          texto: 'Las alertas te informan sobre notas, asistencia, actividades y mensajes.',
+        },
+        {
+          icono: '💬',
+          titulo: 'Habla con el profesor',
+          texto: 'Usa el chat institucional para comunicarte directamente con el docente.',
+        },
+        {
+          icono: '📅',
+          titulo: 'Consulta el calendario',
+          texto: 'Revisa fechas importantes, actividades y entregas académicas.',
+        },
+        {
+          icono: '✅',
+          titulo: 'Mantente informado',
+          texto: 'Aula360 ayuda a estar pendiente del proceso académico del estudiante.',
+        },
+      ];
 
     return (
       <Pantalla>
@@ -2899,7 +2902,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'panelProfesor') {
+  if (pantalla === 'panelProfesor') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -3303,7 +3306,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'detalleEstudianteProfesor') {
+  if (pantalla === 'detalleEstudianteProfesor') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -3728,7 +3731,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'registrarAsistencia' || pantalla === 'editarAsistencia') {
+  if (pantalla === 'registrarAsistencia' || pantalla === 'editarAsistencia') {
     const editando = pantalla === 'editarAsistencia';
 
     const estados = [
@@ -3842,7 +3845,7 @@ export default function App() {
     );
   }
 
-   if (pantalla === 'registrarActividad' || pantalla === 'editarActividad') {
+  if (pantalla === 'registrarActividad' || pantalla === 'editarActividad') {
     const editando = pantalla === 'editarActividad';
 
     const tipos = [
@@ -3970,7 +3973,7 @@ export default function App() {
     );
   }
 
-    if (pantalla === 'panelPadre') {
+  if (pantalla === 'panelPadre') {
     const primerEstudiante = estudiantesVinculados[0];
 
     return (
@@ -4143,7 +4146,7 @@ export default function App() {
     );
   }
 
-    if (pantalla === 'detalleEstudiantePadre') {
+  if (pantalla === 'detalleEstudiantePadre') {
     return (
       <Pantalla>
         <LogoAula360 pequeno />
@@ -4486,12 +4489,12 @@ export default function App() {
                     {notificacion.tipo === 'nota'
                       ? '📝'
                       : notificacion.tipo === 'asistencia'
-                      ? '✅'
-                      : notificacion.tipo === 'actividad'
-                      ? '📚'
-                      : notificacion.tipo === 'chat'
-                      ? '💬'
-                      : '🔔'}
+                        ? '✅'
+                        : notificacion.tipo === 'actividad'
+                          ? '📚'
+                          : notificacion.tipo === 'chat'
+                            ? '💬'
+                            : '🔔'}
                   </Text>
                 </View>
 
@@ -4851,17 +4854,24 @@ const styles = StyleSheet.create({
     padding: 24,
     paddingBottom: 120,
   },
-    logoContenedor: {
+  logoContenedor: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 24,
+    backgroundColor: '#FFFFFF',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 24,
+    alignSelf: 'center',
   },
+
   logoGrande: {
-    width: 190,
-    height: 120,
+    width: 280,
+    height: 135,
   },
+
   logoPequeno: {
-    width: 135,
+    width: 180,
     height: 85,
   },
   logoTexto: {
@@ -5155,7 +5165,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 6,
   },
-    tarjetaBienvenidaPadre: {
+  tarjetaBienvenidaPadre: {
     backgroundColor: COLORS.card,
     borderRadius: 26,
     padding: 22,
@@ -5231,7 +5241,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
   },
-    formularioTarjeta: {
+  formularioTarjeta: {
     backgroundColor: COLORS.card,
     borderRadius: 28,
     padding: 22,
@@ -5341,7 +5351,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '600',
   },
-    gridAsistencia: {
+  gridAsistencia: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -5375,7 +5385,7 @@ const styles = StyleSheet.create({
   textoEstadoAsistenciaActivo: {
     color: COLORS.textLight,
   },
-    gridActividad: {
+  gridActividad: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -5409,7 +5419,7 @@ const styles = StyleSheet.create({
   textoTipoActividadActivo: {
     color: COLORS.textLight,
   },
-    tarjetaProfesorHeader: {
+  tarjetaProfesorHeader: {
     backgroundColor: COLORS.card,
     borderRadius: 26,
     padding: 22,
@@ -5559,7 +5569,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '900',
   },
-    tarjetaDetalleEstudiante: {
+  tarjetaDetalleEstudiante: {
     backgroundColor: COLORS.card,
     borderRadius: 28,
     padding: 22,
@@ -5728,7 +5738,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     textAlign: 'center',
   },
-    authCard: {
+  authCard: {
     backgroundColor: COLORS.card,
     borderRadius: 28,
     padding: 24,
@@ -5768,7 +5778,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '900',
   },
-    selectorRolNuevo: {
+  selectorRolNuevo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 18,
@@ -5811,7 +5821,7 @@ const styles = StyleSheet.create({
   textoRolNuevoActivo: {
     color: COLORS.textLight,
   },
-    tarjetaNotificacionesResumen: {
+  tarjetaNotificacionesResumen: {
     backgroundColor: COLORS.card,
     borderRadius: 26,
     padding: 22,
@@ -5937,7 +5947,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '900',
   },
-    chatHeaderCard: {
+  chatHeaderCard: {
     backgroundColor: COLORS.card,
     borderRadius: 26,
     padding: 20,
@@ -6095,7 +6105,7 @@ const styles = StyleSheet.create({
     minHeight: 95,
     marginBottom: 14,
   },
-    ayudaHeroCard: {
+  ayudaHeroCard: {
     backgroundColor: COLORS.card,
     borderRadius: 28,
     padding: 24,
