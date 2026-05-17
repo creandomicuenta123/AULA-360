@@ -576,9 +576,14 @@ export default function App() {
 
     setPerfil(data);
 
-    // Registro automático desactivado para evitar cierre de la APK al iniciar.
-    // Las notificaciones push se activan manualmente desde el botón "Activar notificaciones".
-    // await registrarTokenPush(userId, false);
+    try {
+      await registrarTokenPush(userId, false);
+    } catch (error) {
+      console.log(
+        'No se pudo registrar el token push al iniciar:',
+        error?.message || error
+      );
+    }
 
     if (data.rol === 'profesor') {
       await cargarGrados(userId);
