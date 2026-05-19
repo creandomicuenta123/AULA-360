@@ -171,7 +171,7 @@ La aplicación busca apoyar los procesos educativos mediante herramientas digita
 ## Equipo de trabajo
 
 - Edwin Cortés
-- Edison
+- Edison Caratar
 
 ---
 
